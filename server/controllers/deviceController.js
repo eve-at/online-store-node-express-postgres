@@ -8,8 +8,7 @@ class DeviceController {
     }
 
     async get(req, res) {
-        const query = req.query
-        res.json(query)
+
     }
 }
 
