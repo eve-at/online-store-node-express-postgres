@@ -11,8 +11,9 @@ class UserController {
 
     async check(req, res, next) {
         const {id} = req.query
+
         if (!id) {
-            next(ApiError.badRequest('User ID is missing'))
+            return next(ApiError.badRequest('User ID is missing'))
         }
 
         res.json(`ID: ${id}`);
