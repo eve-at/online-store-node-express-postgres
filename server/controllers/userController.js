@@ -46,13 +46,9 @@ class UserController {
     }
 
     async check(req, res, next) {
-        const {id} = req.query
+        const token = generateJWT(req.user.id, req.user.email, req.user.role)
 
-        if (!id) {
-            return next(ApiError.badRequest('User ID is missing'))
-        }
-
-        res.json(`ID: ${id}`);
+        res.json(token);
     }
 }
 
