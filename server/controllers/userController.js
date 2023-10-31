@@ -12,12 +12,12 @@ class UserController {
         const {email, password, role} = req.body
 
         if (!email || !password) {
-            return next(ApiError.badRequest('Wrong / Missing email or password'))
+            return next(ApiError.badRequest('Wrong / Missing email or password', '401'))
         }
 
         const candidate = await User.findOne({where: {email}})
         if (candidate) {
-            return next(ApiError.badRequest('This email is already registered'))
+            return next(ApiError.badRequest('This email is already registered', '409'))
         }
 
         const hashPassword = await bcrypt.hash(password, 5)

@@ -6,8 +6,8 @@ class ApiError extends Error {
         this.message = message
     }
 
-    static badRequest(message) {
-        return new ApiError(404, message)
+    static badRequest(message, code = 404) {
+        return new ApiError(code, message)
     }
 
     static internal(message) {

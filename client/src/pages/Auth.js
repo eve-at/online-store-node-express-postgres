@@ -1,13 +1,40 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import Container from 'react-bootstrap/Container'
 import { Button, Card, Form } from 'react-bootstrap';
 import { NavLink, useLocation } from 'react-router-dom';
-import { LOGIN_ROUTE, REGISTRATION_ROUTE } from '../utils/consts';
+import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from '../utils/consts';
+import { login, registration } from '../http/userAPI';
+import { observer } from 'mobx-react-lite';
+import { Context } from '../index';
+import { useNavigate  } from 'react-router-dom'
 
-const Auth = () => {
+const Auth = observer(() => {
+  const {user} = useContext(Context)
   const location = useLocation()
   const isLogin = location.pathname === LOGIN_ROUTE
-  console.log(location)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const navigate = useNavigate()
+
+  const btnClick = async () => {
+    let data
+
+    try {
+      if(isLogin) {
+        data = await login(email, password)      
+      } else {
+        data = await registration(email, password)
+      }    
+      user.setUser(data)
+      user.setIsAuth(true)
+      navigate(SHOP_ROUTE)
+    } catch(e) {
+      alert(e.response.data.message)
+    }   
+
+    console.log(data)
+  }
 
   return (
     <Container 
@@ -20,10 +47,15 @@ const Auth = () => {
           <Form.Control 
             className='mt-3'
             placeholder='Email'
+            value={email}
+            onChange={e => setEmail(e.target.value)}
           />
           <Form.Control 
+            type='password'
             className='mt-3'
             placeholder='Password'
+            value={password}
+            onChange={e => setPassword(e.target.value)}
           />
           <div className='d-flex justify-content-between mt-3'>
             {isLogin ?
@@ -35,7 +67,10 @@ const Auth = () => {
                 Have an account? <NavLink to={LOGIN_ROUTE}>Login</NavLink>
               </div>          
             }
-            <Button variant='outline-success'>
+            <Button 
+              variant='outline-success'
+              onClick={btnClick}
+            >
               {isLogin ? "Login" : "Register"}
             </Button>
           </div>        
@@ -43,6 +78,6 @@ const Auth = () => {
       </Card>
     </Container>
   );
-}
+})
 
 export default Auth;
