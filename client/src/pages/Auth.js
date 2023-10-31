@@ -18,22 +18,19 @@ const Auth = observer(() => {
   const navigate = useNavigate()
 
   const btnClick = async () => {
-    let data
-
     try {
+      let data
       if(isLogin) {
         data = await login(email, password)      
       } else {
         data = await registration(email, password)
       }    
-      user.setUser(data)
+      user.setUser(user)
       user.setIsAuth(true)
       navigate(SHOP_ROUTE)
     } catch(e) {
       alert(e.response.data.message)
     }   
-
-    console.log(data)
   }
 
   return (
