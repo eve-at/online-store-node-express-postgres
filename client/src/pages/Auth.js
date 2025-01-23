@@ -21,33 +21,34 @@ const Auth = observer(() => {
     try {
       let data
       if(isLogin) {
-        data = await login(email, password)      
+        data = await login(email, password)
       } else {
         data = await registration(email, password)
-      }    
-      user.setUser(user)
+      }
+      user.setUser(data)
       user.setIsAuth(true)
+
       navigate(SHOP_ROUTE)
     } catch(e) {
       alert(e.response.data.message)
-    }   
+    }
   }
 
   return (
-    <Container 
+    <Container
       className='d-flex justify-content-center align-items-center'
       style={{height: window.innerHeight - 54}}
     >
       <Card style={{width: 600}} className='p-5'>
         <h2 className='mx-auto'>{ isLogin ? 'Login' : 'Registration'}</h2>
         <Form className='d-flex flex-column'>
-          <Form.Control 
+          <Form.Control
             className='mt-3'
             placeholder='Email'
             value={email}
             onChange={e => setEmail(e.target.value)}
           />
-          <Form.Control 
+          <Form.Control
             type='password'
             className='mt-3'
             placeholder='Password'
@@ -62,15 +63,15 @@ const Auth = observer(() => {
             :
               <div style={{width: 'auto'}}>
                 Have an account? <NavLink to={LOGIN_ROUTE}>Login</NavLink>
-              </div>          
+              </div>
             }
-            <Button 
+            <Button
               variant='outline-success'
               onClick={btnClick}
             >
               {isLogin ? "Login" : "Register"}
             </Button>
-          </div>        
+          </div>
         </Form>
       </Card>
     </Container>

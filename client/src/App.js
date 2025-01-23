@@ -14,14 +14,14 @@ const App = observer(() => {
   useEffect(() => {
     setTimeout(() => {
       check().then(data => {
-        user.setUser(true)
+        user.setUser(data)
         user.setIsAuth(true)
       }).finally(() => setLoading(false))
-    }, 1000)    
+    }, 1000)
   }, [])
 
   if (loading) {
-    return <Spinner animation={'grow'} />
+    return <Spinner animation={'grow'} style={{margin:'50px auto', display: 'block'}}/>
   }
 
   return (
